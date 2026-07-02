@@ -11,6 +11,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "linux101" {
   os_type = "Linux"
   vm_size = "Standard_DS2_V2"
   priority = "Regular"
+  vnet_subnet_id = azurerm_subnet.aks-default.id
   node_labels = {
     "nodepool-type"= "user"
     "environment" = var.environment

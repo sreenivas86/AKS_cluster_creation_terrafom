@@ -18,6 +18,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     min_count            = 1
     os_disk_size_gb      = 30
     type                 = "VirtualMachineScaleSets"
+    vnet_subnet_id = azurerm_subnet.aks-default.id
     node_labels = {
       "nodepool-type" = "system"
       "evironment"    = "dev"
@@ -37,9 +38,12 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   oms_agent {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.insights.id
   }
+   # Role based access control
   azure_active_directory_role_based_access_control {
     admin_group_object_ids = [azuread_group.aks_administtrator.object_id]
   }
+ 
+  
   # windows profile
   windows_profile {
     admin_username = var.windows_admin_username
